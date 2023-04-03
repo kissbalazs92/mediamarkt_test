@@ -3,7 +3,7 @@ Resource    ../base/base_test.robot
 
 *** Variables ***
 
-${BROWSER}             headlesschrome
+${BROWSER}             Chrome
 ${BASE_URL}            https://www.mediamarkt.hu/
 ${LOGIN_URL}           https://www.mediamarkt.hu/webapp/wcs/stores/servlet/LogonForm
 ${USERNAME}            avemee7777@gmail.com
