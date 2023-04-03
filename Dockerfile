@@ -2,8 +2,13 @@
 FROM robotframework/rfdocker:latest
 
 # Munkakönyvtár beállítása
-WORKDIR /opt/robotframework
+WORKDIR /usr/src/app
 
-COPY tests/ ./tests/
+# Teljes projekt másolása a képbe
+COPY . .
 
-CMD ["-d", "output", "tests"]
+# Létrehozzuk az output könyvtárat és beállítjuk a megfelelő jogosultságokat
+RUN mkdir output && chown -R robot:robot output
+
+# Parancs a Robot Framework tesztek futtatásához
+CMD ["robot", "-d", "output", "tests"]
