@@ -35,7 +35,8 @@ jobs:
         cache-to: type=local,dest=/tmp/.buildx-cache
 
     - name: Run tests in Docker container
-      run: docker run --name robot-container -v $(pwd)/output:/usr/src/app/output my-robot-framework:latest
+      run: docker run --name robot-container -v $(pwd)/results:/usr/src/app/results my-robot-framework:latest
+
 
     - name: Copy results
       run: docker cp robot-container:/usr/src/app/results ./results
