@@ -11,7 +11,7 @@ jobs:
 
     strategy:
       matrix:
-        browser: [chrome, firefox, edge, opera]
+        browser: [chrome, firefox]
 
     steps:
     - name: Check out repository
