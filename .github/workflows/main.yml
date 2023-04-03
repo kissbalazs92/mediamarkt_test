@@ -9,6 +9,10 @@ jobs:
   build-and-run-tests:
     runs-on: ubuntu-latest
 
+    strategy:
+      matrix:
+        browser: [chrome, firefox, edge, opera]
+
     steps:
     - name: Check out repository
       uses: actions/checkout@v2
@@ -35,4 +39,15 @@ jobs:
         cache-to: type=local,dest=/tmp/.buildx-cache
 
     - name: Run tests in Docker container
-      run: docker run --rm -v $(pwd)/output:/usr/src/app/output my-robot-framework:latest
+      run: docker run --rm --name my-robot-framework -v $(pwd)/output:/usr/src/app/output -e BROWSER=${{ matrix.browser }} my-robot-framework:latest
+
+    - name: Copy test results
+      run: |
+        mkdir -p results/
+        docker cp my-robot-framework:/usr/src/app/output ./results/
+
+    - name: Upload test results
+      uses: actions/upload-artifact@v2
+      with:
+        name: test-results-${{ matrix.browser }}
+        path: results/
