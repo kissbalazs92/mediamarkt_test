@@ -10,9 +10,14 @@ Resource    ../keywords/login_keywords.robot
 Resource    ../resources/common.robot
 Resource    ../components/menu.robot
 
+*** Variables ***
+
+${CHROMEDRIVER_PATH}    ..\drivers\chromedriver.exe
+
 *** Keywords ***
 
 Common Test Setup
-    Open Browser    ${BASE_URL}    ${BROWSER}    options=add_experimental_option("excludeSwitches", ["enable-logging"])
+    Open Browser    ${BASE_URL}    ${BROWSER}    executable_path=${chromedriver_path}
+    Maximize Browser Window
 Common Test Teardown 
     Close All Browsers

@@ -1,20 +1,17 @@
 # Használja a selenium/standalone-chrome képet mint alap
-FROM selenium/standalone-chrome:latest
+FROM python:3.8-slim-buster
 
 # Állítson be egy munkakönyvtárat a konténerben
 WORKDIR /app
-
-# Telepítse a szükséges csomagokat
-USER root
-RUN apt-get update && \
-    apt-get install -y --no-install-recommends python3 python3-pip && \
-    rm -rf /var/lib/apt/lists/*
 
 # Másolja a projekt követelményeit a konténerbe
 COPY requirements.txt .
 
 # Telepítse a követelményeket
 RUN pip3 install --trusted-host pypi.python.org -r requirements.txt
+RUN apt-get install -y wget
+RUN wget -q https://dl.google.com/linux/direct/google-chrome-stable_current_amd64.deb
+RUN apt-get install ./google-chrome-stable_current_amd64.deb
 
 # Másolja a projekt forráskódját a konténerbe
 COPY . .
