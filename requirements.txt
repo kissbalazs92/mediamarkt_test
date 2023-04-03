@@ -1,4 +1,2 @@
 robotframework==4.1.2
 robotframework-seleniumlibrary==5.1.3
-Collections==0.1.12
-StringDist==1.0.9
