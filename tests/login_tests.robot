@@ -17,6 +17,7 @@ Login to Medimarkt webshop
     Save Cookies
 
 Go to user settings
+    [Documentation]    Tests the settings functionality.
     Setup With Saved Cookies
     Go To Login Page
     Click Element    ${MY_PROFILE_BUTTON}
