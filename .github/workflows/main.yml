@@ -35,11 +35,13 @@ jobs:
         cache-to: type=local,dest=/tmp/.buildx-cache
 
     - name: Run tests in Docker container
-      run: docker run --rm -v $(pwd)/output:/usr/src/app/output my-robot-framework:latest
+      run: docker run --name my-test-container --rm -v $(pwd)/output:/usr/src/app/output my-robot-framework:latest
 
     - name: Save test results
       run: |
         mkdir -p results/
+        docker stop my-test-container
+        docker rm my-test-container
         docker cp $(docker create --rm my-robot-framework:latest):/usr/src/app/output results/
 
     - name: Upload test results as artifacts
