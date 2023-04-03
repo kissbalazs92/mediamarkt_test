@@ -27,7 +27,7 @@ Setup With Saved Cookies
         ${cookie_value} =    Get From Dictionary    ${SAVED_COOKIES}    ${cookie_name}
         Add Cookie    ${cookie_name}    ${cookie_value}
     END
-    ${asd}=    Get Cookies    as_dict=${True}
+    #${asd}=    Get Cookies    as_dict=${True}
     #Log    Betöltött cookie-k: ${asd}    console=${True}
 
 Switch To Tab

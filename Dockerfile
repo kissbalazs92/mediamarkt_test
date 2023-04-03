@@ -25,5 +25,4 @@ RUN apt-get update && \
 COPY . .
 
 # Futtassa a teszteket
-CMD ["sh", "-c", "python3 -m robot -d results -v BROWSER:${BROWSER} tests"]
-
+CMD ["python3", "-m", "robot", "-d", "results", "tests"]
