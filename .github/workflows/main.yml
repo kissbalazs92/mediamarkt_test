@@ -41,10 +41,16 @@ jobs:
       run: mkdir -p results && sudo chmod 777 results
 
     - name: Run tests in Docker container
-      run: docker run --name robot-container -v $(pwd)/output:/usr/src/app/results my-robot-framework:latest
+      run: docker run --name robot-container -v $(pwd)/output:/usr/src/app/output my-robot-framework:latest
 
     - name: Copy results
       run: docker cp robot-container:/usr/src/app/results ./results
 
     - name: Remove container
       run: docker stop robot-container && docker rm robot-container
+
+    - name: Upload test results
+      uses: actions/upload-artifact@v2
+      with:
+        name: test-results
+        path: results/
