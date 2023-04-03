@@ -6,7 +6,7 @@ WORKDIR /usr/src/app
 
 # Függőségek telepítése
 COPY requirements.txt .
-RUN pip install -v --no-cache-dir -r robotframework && pip install -v --no-cache-dir -r robotframework-seleniumlibrary && pip install -v --no-cache-dir -r collections && pip install -v --no-cache-dir -r string
+RUN pip install -v --no-cache-dir -r requirements.txt
 
 # Teljes projekt másolása a képbe
 COPY . .
