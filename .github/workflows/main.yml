@@ -41,8 +41,8 @@ jobs:
       run: |
         mkdir -p results/
         docker stop my-test-container
+        docker cp my-test-container:/usr/src/app/output results/
         docker rm my-test-container
-        docker cp $(docker create --rm my-robot-framework:latest):/usr/src/app/output results/
 
     - name: Upload test results as artifacts
       if: always()
