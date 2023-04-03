@@ -38,7 +38,7 @@ jobs:
       run: docker run --name robot-container -v $(pwd)/results:/usr/src/app/results my-robot-framework:latest
 
     - name: Create results directory
-      run: sudo mkdir -p results
+      run: sudo mkdir -p /home/runner/work/mediamarkt_test/mediamarkt_test/results/results
 
     - name: Copy results
       run: docker cp robot-container:/usr/src/app/results ./results
