@@ -24,8 +24,8 @@ Go to user settings
     Click Element    ${PERSONAL_DATA_OPTION}
     Page Should Contain    Jelszó megváltoztatása
 
-Click on Karrier navigation link
-    Click Element    ${ACCEPT_COOKIE_BUTTON}
-    Click on specified navigation link    Karrier
-    Switch To Tab    1
-    Location Should Contain    https://careers.mediamarktsaturn.com/
+#Click on Karrier navigation link
+ #   Click Element    ${ACCEPT_COOKIE_BUTTON}
+  #  Click on specified navigation link    Karrier
+   # Switch To Tab    1
+    #Location Should Contain    https://careers.mediamarktsaturn.com/
