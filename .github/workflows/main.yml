@@ -34,14 +34,17 @@ jobs:
         cache-from: type=local,src=/tmp/.buildx-cache
         cache-to: type=local,dest=/tmp/.buildx-cache
 
-    - name: Run tests in Docker container
-      run: docker run --name robot-container -v $(pwd)/results:/usr/src/app/results my-robot-framework:latest
+    - name: Set permissions for mediamarkt_test directory
+      run: sudo chmod 777 .
 
     - name: Create results directory
-      run: sudo mkdir -p /home/runner/work/mediamarkt_test/mediamarkt_test/results/results
+      run: mkdir -p results && sudo chmod 777 results
+
+    - name: Run tests in Docker container
+      run: docker run --name robot-container -v $(pwd)/output:/usr/src/app/output my-robot-framework:latest
 
     - name: Copy results
       run: docker cp robot-container:/usr/src/app/results ./results
 
-    - name: Stop and remove container
+    - name: Remove container
       run: docker stop robot-container && docker rm robot-container
