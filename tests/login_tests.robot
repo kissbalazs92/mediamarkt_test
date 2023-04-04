@@ -10,7 +10,7 @@ Test Teardown    Common Test Teardown
 Login to Medimarkt webshop
     [Documentation]    Tests the login functionality.
     [Tags]    high_priority    functional_test
-    Click Element    ${ACCEPT_COOKIE_BUTTON}
+    Accept Cookies
     Go To Login Page
     Login With Credentials    ${USERNAME}    ${PASSWORD}
     Verify Successful Login
@@ -19,6 +19,7 @@ Login to Medimarkt webshop
 
 Go to user settings
     [Documentation]    Tests the settings functionality.
+    Accept Cookies
     Setup With Saved Cookies
     Go To Login Page
     Click Element    ${MY_PROFILE_BUTTON}

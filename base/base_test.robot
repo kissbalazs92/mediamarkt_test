@@ -11,12 +11,14 @@ Resource    ../keywords/login_keywords.robot
 Resource    ../resources/common.robot
 Resource    ../components/menu.robot
 
+Variables    ../resources/common_variables.py
+
 *** Variables ***
 ${BROWSERS}    ${EMPTY}
 
 *** Keywords ***
 Common Test Setup
-    ${BROWSERS}=    Create List    Chrome    Firefox    Edge    Opera
+    ${BROWSERS}=    Create List    Chrome    Firefox    Edge
     IF    $BROWSER == $BROWSERS[0]
         Setup Chrome
     END
@@ -25,9 +27,6 @@ Common Test Setup
     END
     IF    $BROWSER == $BROWSERS[2]
         Setup Edge
-    END
-    IF    $BROWSER == $BROWSERS[3]
-        Setup Opera
     END
     Go To    ${BASE_URL}
 
@@ -46,22 +45,16 @@ Setup Firefox
     ${firefox_options} =    Evaluate    selenium.webdriver.FirefoxOptions()
     Call Method    ${firefox_options}    add_argument    --headless
     Call Method    ${firefox_options}    add_argument    --start-maximized
+    ${LOG_PATH} =    Set Variable    ../results/geckodriver.log
     ${firefox_driver_path}=    Get Firefox Driver Path
-    Create WebDriver    ${BROWSER}    executable_path=${firefox_driver_path}    firefox_options=${firefox_options}
+    Create WebDriver    ${BROWSER}    executable_path=${firefox_driver_path}    options=${firefox_options}    log_path=${LOG_PATH}
 
 Setup Edge
     ${edge_options} =    Evaluate    selenium.webdriver.EdgeOptions()
     Call Method    ${edge_options}    add_argument    --headless
     Call Method    ${edge_options}    add_argument    --start-maximized
     ${edge_driver_path}=    Get Edge Driver Path
-    Create WebDriver    ${BROWSER}    executable_path=${edge_driver_path}    edge_options=${edge_options}
-
-Setup Opera
-    ${opera_options} =    Evaluate    selenium.webdriver.ChromeOptions()
-    Call Method    ${opera_options}    add_argument    --headless
-    Call Method    ${opera_options}    add_argument    --start-maximized
-    ${opera_driver_path}=    Get Opera Driver Path
-    Create WebDriver    ${BROWSER}    executable_path=${opera_driver_path}    chrome_options=${opera_options}
+    Create WebDriver    ${BROWSER}    executable_path=${edge_driver_path}    options=${edge_options}
 
 Common Test Teardown 
     Close All Browsers
