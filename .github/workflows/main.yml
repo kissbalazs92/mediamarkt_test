@@ -45,7 +45,7 @@ jobs:
       run: mkdir -p results && sudo chmod 777 results
 
     - name: Run tests in Docker container
-      run: docker run --name robot-container -v $(pwd)/results:/usr/src/app/results -e BROWSER=${{ matrix.browser }} my-robot-framework:latest
+      run: docker run --name robot-container -v $(pwd)/results:/usr/src/app/results -e BROWSER=${{ matrix.browsers }} my-robot-framework:latest
 
     - name: Copy results
       run: docker cp robot-container:/app/results .
@@ -55,5 +55,5 @@ jobs:
     - name: Upload test results
       uses: actions/upload-artifact@v2
       with:
-        name: test-results-${{ matrix.browser }}
+        name: test-results-${{ matrix.browsers }}
         path: ./results
