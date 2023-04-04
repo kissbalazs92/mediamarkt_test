@@ -44,16 +44,16 @@ jobs:
       run: docker run --name robot-container -v $(pwd)/results:/usr/src/app/results my-robot-framework:latest
 
     - name: Copy results
-      run: docker cp robot-container:/usr/src/app/results ./results
+      run: docker cp robot-container:/usr/src/app/results $(pwd)/results
 
     - name: Remove container
       run: docker stop robot-container && docker rm robot-container
 
     - name: List files in results directory
-      run: ls -a results/results/
+      run: ls -a $(pwd)/results
 
     - name: Upload test results
       uses: actions/upload-artifact@v2
       with:
         name: test-results
-        path: ./results/results
+        path: $(pwd)/results
