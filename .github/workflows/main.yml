@@ -6,21 +6,30 @@ on:
       - master
 
 jobs:
-  build-and-run-tests:
+  prepare-matrix:
     runs-on: ubuntu-latest
-
-    strategy:
-      matrix:
-        browsers: ${{fromJson(steps.read-browsers.outputs.browsers)}}
-
+    outputs:
+      matrix: ${{ steps.set-matrix.outputs.matrix }}
     steps:
     - name: Check out repository
       uses: actions/checkout@v2
 
-    - name: Read browsers.json
-      id: read-browsers
+    - name: Read browsers JSON file
+      id: set-matrix
       run: |
-        echo "::set-output name=browsers::$(jq -r '.browsers | join(",")' browsers.json)"
+        echo "::set-output name=matrix::$(cat browsers.json)"
+
+  build-and-run-tests:
+    needs: prepare-matrix
+    runs-on: ubuntu-latest
+
+    strategy:
+      matrix:
+        browsers: ${{fromJson(needs.prepare-matrix.outputs.matrix)}}
+
+    steps:
+    - name: Check out repository
+      uses: actions/checkout@v2
 
     - name: Set up Docker Buildx
       uses: docker/setup-buildx-action@v1
