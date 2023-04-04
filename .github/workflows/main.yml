@@ -17,7 +17,11 @@ jobs:
     - name: Read browsers JSON file
       id: set-matrix
       run: |
-        echo "::set-output name=matrix::{\"browsers\": $(cat browsers.json)}"
+        content=`cat ./browsers.json`
+        content="${content//'%'/'%25'}"
+        content="${content//$'\n'/'%0A'}"
+        content="${content//$'\r'/'%0D'}"
+        echo "::set-output name=matrix::{\"browsers\": $content}"
 
   build-and-run-tests:
     needs: prepare-matrix
@@ -25,7 +29,7 @@ jobs:
 
     strategy:
       matrix:
-        browsers: ${{fromJsonArray(needs.prepare-matrix.outputs.matrix).browsers}}
+        browsers: ${{fromJson(needs.prepare-matrix.outputs.matrix).browsers}}
 
     steps:
     - name: Check out repository
