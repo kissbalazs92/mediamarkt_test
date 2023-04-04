@@ -9,6 +9,10 @@ jobs:
   build-and-run-tests:
     runs-on: ubuntu-latest
 
+    strategy:
+      matrix:
+        browsers: [Chrome, Firefox, Edge]
+
     steps:
     - name: Check out repository
       uses: actions/checkout@v2
@@ -41,19 +45,15 @@ jobs:
       run: mkdir -p results && sudo chmod 777 results
 
     - name: Run tests in Docker container
-      run: docker run --name robot-container -v $(pwd)/results:/usr/src/app/results my-robot-framework:latest
+      run: docker run --name robot-container -v $(pwd)/results:/usr/src/app/results -e BROWSER=${{ matrix.browser }} my-robot-framework:latest
 
     - name: Copy results
-      run: docker cp robot-container:/app/results . && ls -a ./results
-
+      run: docker cp robot-container:/app/results .
     - name: Remove container
       run: docker stop robot-container && docker rm robot-container
-
-    - name: List files in results directory
-      run: ls -a ./results
 
     - name: Upload test results
       uses: actions/upload-artifact@v2
       with:
-        name: test-results
+        name: test-results-${{ matrix.browser }}
         path: ./results

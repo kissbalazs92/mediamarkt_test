@@ -25,5 +25,5 @@ RUN apt-get update && \
 COPY . .
 
 # Futtassa a teszteket
-CMD ["sh", "-c", "python3 -m robot -d results tests && ls -a /app/results"]
+CMD ["sh", "-c", "python3 -m robot -d results tests"]
 
