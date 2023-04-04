@@ -45,6 +45,7 @@ jobs:
 
     - name: Copy results
       run: docker cp robot-container:/usr/src/app/results $(pwd)/results
+      run: ls -a $(pwd)/results
 
     - name: Remove container
       run: docker stop robot-container && docker rm robot-container
