@@ -7,6 +7,9 @@ Test Teardown    Common Test Teardown
 
 
 *** Test Cases ***
+
+#Lokál futtatáshoz parancs: robot -d results v- BRWOSER:{browser} -V ./resources/common_variables.py tests
+#A {browser} Chrome, Firefox, Edge értékekkel működik
 Login to Medimarkt webshop
     [Documentation]    Tests the login functionality.
     [Tags]    high_priority    functional_test
