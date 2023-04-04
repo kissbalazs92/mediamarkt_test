@@ -15,6 +15,7 @@ Login to Medimarkt webshop
     Login With Credentials    ${USERNAME}    ${PASSWORD}
     Verify Successful Login
     Save Cookies
+    Log    ${BROWSER}    console=${True}
 
 Go to user settings
     [Documentation]    Tests the settings functionality.
