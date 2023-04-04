@@ -50,7 +50,7 @@ jobs:
       run: docker stop robot-container && docker rm robot-container
 
     - name: List files in results directory
-      run: sudo ls -R /
+      run: ls -a results/
 
     - name: Upload test results
       uses: actions/upload-artifact@v2
