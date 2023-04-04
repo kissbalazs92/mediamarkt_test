@@ -17,7 +17,7 @@ jobs:
     - name: Read browsers JSON file
       id: set-matrix
       run: |
-        echo "::set-output name=matrix::$(cat browsers.json)"
+        echo "::set-output name=matrix::{\"browsers\": $(cat browsers.json)}"
 
   build-and-run-tests:
     needs: prepare-matrix
@@ -25,7 +25,7 @@ jobs:
 
     strategy:
       matrix:
-        browsers: ${{fromJson(needs.prepare-matrix.outputs.matrix)}}
+        browsers: ${{fromJson(needs.prepare-matrix.outputs.matrix).browsers}}
 
     steps:
     - name: Check out repository
