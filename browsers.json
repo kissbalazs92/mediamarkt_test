@@ -1,3 +1,5 @@
-{
-    "browsers": ["Chrome", "Firefox"]
-}
+[
+    "Chrome",
+    "Firefox"
+  ]
+  
