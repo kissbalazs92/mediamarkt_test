@@ -21,7 +21,7 @@ Login to Medimarkt webshop
     Log    ${BROWSER}    console=${True}
 
 Go to user settings
-    [Documentation]    Tests the settings functionality.
+    [Documentation]    Tests the settings functionality...
     Accept Cookies
     Setup With Saved Cookies
     Go To Login Page
