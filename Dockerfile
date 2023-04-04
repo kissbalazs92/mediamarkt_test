@@ -25,5 +25,4 @@ RUN apt-get update && \
 COPY . .
 
 # Futtassa a teszteket shellben
-CMD ["sh", "-c", "python3 -m robot -d results v- BRWOSER:$BROWSER -V ./resources/common_variables.py tests"]
-
+CMD ["sh", "-c", "python3 -m robot -d results -v BRWOSER:$BROWSER -V ./resources/common_variables.py tests"]
