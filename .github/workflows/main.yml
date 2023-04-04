@@ -25,7 +25,7 @@ jobs:
 
     strategy:
       matrix:
-        browsers: ${{fromJson(needs.prepare-matrix.outputs.matrix).browsers}}
+        browsers: ${{fromJsonArray(needs.prepare-matrix.outputs.matrix).browsers}}
 
     steps:
     - name: Check out repository
