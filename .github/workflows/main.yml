@@ -44,8 +44,7 @@ jobs:
       run: docker run --name robot-container -v $(pwd)/results:/usr/src/app/results my-robot-framework:latest
 
     - name: Copy results
-      run: docker cp robot-container:/usr/src/app/results $(pwd)/results
-      run: ls -a $(pwd)/results
+      run: docker cp robot-container:/usr/src/app/results $(pwd)/results && ls -a $(pwd)/results
 
     - name: Remove container
       run: docker stop robot-container && docker rm robot-container
