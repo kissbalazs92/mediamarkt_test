@@ -21,17 +21,28 @@ jobs:
         content="${content//'%'/'%25'}"
         content="${content//$'\n'/'%0A'}"
         content="${content//$'\r'/'%0D'}"
-        echo "matrix={\"browsers\": $content}" >> $GITHUB_OUTPUT
+        echo "MATRIX={\"browsers\": $content}" >> $GITHUB_ENV
+    - name: Set output
+      id: output
+      run: |
+        echo "matrix=${{ env.MATRIX }}" > output_matrix
+    - name: Upload output_matrix file
+      uses: actions/upload-artifact@v2
+      with:
+        name: output_matrix
+        path: output_matrix
 
   build-and-run-tests:
     needs: prepare-matrix
     runs-on: ubuntu-latest
-
-    strategy:
-      matrix:
-        browsers: ${{fromJson(needs.prepare-matrix.outputs.matrix).browsers}}
-
     steps:
+    - name: Download output_matrix artifact
+      uses: actions/download-artifact@v2
+      with:
+        name: output_matrix
+    - name: Set output_matrix as environment variable
+      run: |
+        echo "MATRIX=$(cat output_matrix)" >> $GITHUB_ENV
     - name: Check out repository
       uses: actions/checkout@v3
 
@@ -76,3 +87,7 @@ jobs:
       with:
         name: test-results-${{ matrix.browsers }}
         path: ./results
+
+    strategy:
+      matrix:
+        browsers: ${{fromJson(env.MATRIX).browsers}}
