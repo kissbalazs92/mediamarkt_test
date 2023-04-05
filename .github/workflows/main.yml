@@ -6,7 +6,6 @@ on:
       - master
 
   build-and-run-tests:
-    needs: prepare-matrix
     runs-on: ubuntu-latest
 
     strategy:
