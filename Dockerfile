@@ -17,18 +17,17 @@ RUN apt-get update && \
 RUN wget -q -O - https://dl.google.com/linux/linux_signing_key.pub | apt-key add - && \
     echo "deb http://dl.google.com/linux/chrome/deb/ stable main" >> /etc/apt/sources.list.d/google-chrome.list
 
-# Adjuk hozzá a Firefox repository-ját a package manager-hez
-RUN echo "deb http://deb.debian.org/debian/ stable main" >> /etc/apt/sources.list.d/debian.list
+# Frissítsük a package manager cache-ét újra
+RUN apt-get update
 
-# Frissítsük a package manager cache-ét újra, majd telepítsük a Google Chrome-ot és Firefox-ot
-RUN apt-get update && \
-    apt-get install -y google-chrome-stable firefox-esr
+# Másolja a böngésző telepítő scriptet a konténerbe
+COPY install_browsers.sh .
 
-RUN google-chrome --version && \
-    firefox --version
+# Telepítse a böngészőket a kapott BROWSER változó alapján
+RUN chmod +x /install_browsers.sh && /install_browsers.sh "${BROWSER}"
 
 # Másolja a projekt forráskódját a konténerbe
 COPY . .
 
 # Futtassa a teszteket shellben
-CMD ["sh", "-c", "python3 -m robot -d results -v BROWSER:$BROWSER -V ./resources/common_variables.py tests"]
+CMD ["sh", "-c", "python3 -m robot -d results -v BRWOSER:$BROWSER -V ./resources/common_variables.py tests"]
