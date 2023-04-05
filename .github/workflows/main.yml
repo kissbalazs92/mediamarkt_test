@@ -11,83 +11,70 @@ jobs:
     outputs:
       matrix: ${{ steps.set-matrix.outputs.matrix }}
     steps:
-    - name: Check out repository
-      uses: actions/checkout@v3
+      - name: Check out repository
+        uses: actions/checkout@v3
 
-    - name: Read browsers JSON file
-      id: set-matrix
-      run: |
-        content=`cat ./browsers.json`
-        content="${content//'%'/'%25'}"
-        content="${content//$'\n'/'%0A'}"
-        content="${content//$'\r'/'%0D'}"
-        echo "MATRIX={\"browsers\": $content}" >> $GITHUB_ENV
-    - name: Set output
-      id: output
-      run: |
-        echo "matrix=${{ env.MATRIX }}" > output_matrix
-    - name: Upload output_matrix file
-      uses: actions/upload-artifact@v2
-      with:
-        name: output_matrix
-        path: output_matrix
+      - name: Read browsers JSON file
+        id: set-matrix
+        run: |
+          content=`cat ./browsers.json`
+          content="${content//'%'/'%25'}"
+          content="${content//$'\n'/'%0A'}"
+          content="${content//$'\r'/'%0D'}"
+          echo "MATRIX={\"browsers\": $content}" >> $GITHUB_ENV
+
+      - name: Output matrix
+        id: output-matrix
+        run: echo "::set-output name=matrix::${{ env.MATRIX }}"
 
   build-and-run-tests:
     needs: prepare-matrix
     runs-on: ubuntu-latest
-    steps:
-    - name: Download output_matrix artifact
-      uses: actions/download-artifact@v2
-      with:
-        name: output_matrix
-    - name: Set output_matrix as environment variable
-      run: |
-        echo "MATRIX=$(cat output_matrix)" >> $GITHUB_ENV
-    - name: Check out repository
-      uses: actions/checkout@v3
-
-    - name: Set up Docker Buildx
-      uses: docker/setup-buildx-action@v2
-
-    - name: Cache Docker layers
-      uses: actions/cache@v3
-      with:
-        path: /tmp/.buildx-cache
-        key: ${{ runner.os }}-buildx-${{ github.sha }}
-        restore-keys: |
-          ${{ runner.os }}-buildx-
-
-    - name: Build and run tests
-      uses: docker/build-push-action@v3
-      with:
-        context: .
-        load: true
-        push: false
-        tags: robot-framework:latest
-        cache-from: type=local,src=/tmp/.buildx-cache
-        cache-to: type=local,dest=/tmp/.buildx-cache
-
-    - name: Set permissions for mediamarkt_test directory
-      run: sudo chmod 777 .
-
-    - name: Create results directory
-      run: mkdir -p results && sudo chmod 777 results
-
-    - name: Run tests in Docker container
-      run: docker run --name robot-container -v $(pwd)/results:/usr/src/app/results -e BROWSER=${{ matrix.browsers }} robot-framework:latest
-
-    - name: Copy results
-      run: docker cp robot-container:/app/results .
-
-    - name: Remove container
-      run: docker stop robot-container && docker rm robot-container
-
-    - name: Upload test results
-      uses: actions/upload-artifact@v3
-      with:
-        name: test-results-${{ matrix.browsers }}
-        path: ./results
-
     strategy:
       matrix:
-        browsers: ${{fromJson(env.MATRIX).browsers}}
+        browsers: ${{fromJson(needs.prepare-matrix.outputs.matrix).browsers}}
+    steps:
+      - name: Check out repository
+        uses: actions/checkout@v3
+
+      - name: Set up Docker Buildx
+        uses: docker/setup-buildx-action@v2
+
+      - name: Cache Docker layers
+        uses: actions/cache@v3
+        with:
+          path: /tmp/.buildx-cache
+          key: ${{ runner.os }}-buildx-${{ github.sha }}
+          restore-keys: |
+            ${{ runner.os }}-buildx-
+
+      - name: Build and run tests
+        uses: docker/build-push-action@v3
+        with:
+          context: .
+          load: true
+          push: false
+          tags: robot-framework:latest
+          cache-from: type=local,src=/tmp/.buildx-cache
+          cache-to: type=local,dest=/tmp/.buildx-cache
+
+      - name: Set permissions for mediamarkt_test directory
+        run: sudo chmod 777 .
+
+      - name: Create results directory
+        run: mkdir -p results && sudo chmod 777 results
+
+      - name: Run tests in Docker container
+        run: docker run --name robot-container -v $(pwd)/results:/usr/src/app/results -e BROWSER=${{ matrix.browsers }} robot-framework:latest
+
+      - name: Copy results
+        run: docker cp robot-container:/app/results .
+
+      - name: Remove container
+        run: docker stop robot-container && docker rm robot-container
+
+      - name: Upload test results
+        uses: actions/upload-artifact@v3
+        with:
+          name: test-results-${{ matrix.browsers }}
+          path: ./results
