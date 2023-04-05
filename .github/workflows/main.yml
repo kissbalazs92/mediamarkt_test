@@ -5,31 +5,13 @@ on:
     branches:
       - master
 
-jobs:
-  prepare-matrix:
-    runs-on: ubuntu-latest
-    outputs:
-      matrix: ${{ env.matrix }}
-    steps:
-    - name: Check out repository
-      uses: actions/checkout@v3
-
-    - name: Read browsers JSON file
-      id: set-matrix
-      run: |
-        content=`cat ./browsers.json`
-        content="${content//'%'/'%25'}"
-        content="${content//$'\n'/'%0A'}"
-        content="${content//$'\r'/'%0D'}"
-        echo "matrix={\"browsers\": $content}" >> $GITHUB_ENV
-
   build-and-run-tests:
     needs: prepare-matrix
     runs-on: ubuntu-latest
 
     strategy:
       matrix:
-        browsers: ${{fromJson(needs.prepare-matrix.outputs.matrix).browsers}}
+        browsers: [ $(cat browsers.txt) ]
 
     steps:
     - name: Check out repository
