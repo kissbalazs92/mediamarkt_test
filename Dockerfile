@@ -1,7 +1,7 @@
-# Használja a selenium/standalone-chrome képet mint alap
+# Kiinduló kép
 FROM python:3.8-slim-buster
 
-# Állítson be egy munkakönyvtárat a konténerben
+# Munkaknyvtár létrehozása
 WORKDIR /app
 
 # Másolja a projekt követelményeit a konténerbe
@@ -24,6 +24,7 @@ RUN echo "deb http://deb.debian.org/debian/ stable main" >> /etc/apt/sources.lis
 RUN apt-get update && \
     apt-get install -y google-chrome-stable firefox-esr
 
+# Ellenőrizzük a Chrome és Firefox verzióit
 RUN google-chrome --version && \
     firefox --version
 
