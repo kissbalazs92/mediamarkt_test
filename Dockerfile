@@ -4,8 +4,8 @@ FROM python:3.8-slim-buster
 # Állítson be egy munkakönyvtárat a konténerben
 WORKDIR /app
 
-# Másolja a projekt követelményeit a konténerbe
-COPY requirements.txt .
+# Másolja a projekt forráskódját a konténerbe
+COPY . .
 
 # Telepítse a követelményeket
 RUN pip3 install --trusted-host pypi.python.org -r requirements.txt
@@ -25,9 +25,6 @@ COPY install_browsers.sh .
 
 # Telepítse a böngészőket a kapott BROWSER változó alapján
 RUN chmod +x /install_browsers.sh && /install_browsers.sh "${BROWSER}"
-
-# Másolja a projekt forráskódját a konténerbe
-COPY . .
 
 # Futtassa a teszteket shellben
 CMD ["sh", "-c", "python3 -m robot -d results -v BRWOSER:$BROWSER -V ./resources/common_variables.py tests"]
