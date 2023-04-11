@@ -1,6 +1,8 @@
-BROWSER = "Firefox"
-BASE_URL = "https://www.mediamarkt.hu"
-LOGIN_URL = "https://www.mediamarkt.hu/webapp/wcs/stores/servlet/LogonForm"
-USERNAME = "avemee7777@gmail.com"
-PASSWORD = "mosoly77"
-REGISTERED_NAME = "Balázs"
+import os
+
+BROWSER = os.environ.get("BROWSER", "Firefox")
+BASE_URL = "http://web:80" #lokálban futtatáshoz át kell írni: localhost:8080
+USERNAME = "user"
+PASSWORD = "user123"
+ADMIN = "admin"
+ADMIN_PASSWORD = "admin123"
