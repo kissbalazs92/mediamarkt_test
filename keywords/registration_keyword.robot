@@ -50,4 +50,4 @@ Verify Successful Registration
     Should Be Equal    ${result[0][5]}    ${email}
     Should Be Equal    ${result[0][6]}    ${phone}
     Should Be Equal    ${result[0][7]}    ${address}
-    Should Be Equal    ${result[0][8]}    FALSE
+    Should Be Equal As Numbers   ${result[0][8]}    0

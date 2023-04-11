@@ -5,7 +5,6 @@ Library    Collections
 Library    String
 Library    ../resources/webdriver-helper.py
 Library    ../resources/random_data_generator.py
-Library    ../resources/db_connection.py
 Library    ../resources/url_helper.py
 
 Resource    ../pages/home_page.robot

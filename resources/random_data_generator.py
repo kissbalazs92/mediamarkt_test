@@ -24,4 +24,4 @@ def random_phone_number():
     return fake.phone_number()
 
 def random_address():
-    return fake.address()
+    return fake.street_address()
