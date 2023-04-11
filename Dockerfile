@@ -32,4 +32,5 @@ RUN google-chrome --version && \
 COPY . .
 
 # Futtassa a teszteket shellben
-CMD ["sh", "-c", "python3 -m robot -d results -v BROWSER:$BROWSER -V ./resources/common_variables.py tests"]
+ENTRYPOINT python3 -m robot -d results -v BROWSER:$BROWSER -V ./resources/common_variables.py tests
+CMD []
