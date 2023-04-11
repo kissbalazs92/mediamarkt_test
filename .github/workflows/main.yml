@@ -4,13 +4,32 @@ on:
   push:
     branches:
       - master
+
 jobs:
+  prepare-matrix:
+    runs-on: ubuntu-latest
+    outputs:
+      matrix: ${{ steps.set-matrix.outputs.matrix }}
+    steps:
+    - name: Check out repository
+      uses: actions/checkout@v3
+
+    - name: Read browsers JSON file
+      id: set-matrix
+      run: |
+        content=`cat ./browsers.json`
+        content="${content//'%'/'%25'}"
+        content="${content//$'\n'/'%0A'}"
+        content="${content//$'\r'/'%0D'}"
+        echo "::set-output name=matrix::{\"browsers\": $content}"
+
   build-and-run-tests:
+    needs: prepare-matrix
     runs-on: ubuntu-latest
 
     strategy:
       matrix:
-        browsers: [ $(cat browsers.txt) ]
+        browsers: ${{fromJson(needs.prepare-matrix.outputs.matrix).browsers}}
 
     steps:
     - name: Check out repository
